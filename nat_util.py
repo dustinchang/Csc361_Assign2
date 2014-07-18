@@ -92,11 +92,13 @@ def makeC(traffic_line, public_addr, nat_port):
 	Clist[1][2] = str(nat_port)
 	return Clist
 
+
+
 def generate_tables(traffic_list, public_address, nat_port):
 	T = []
 	C = []
 	for p in traffic_list:
-		pcpy = p
+		pcpy = copy.copy(p)
 		if pcpy[1] == 'outbound':
 			outFlag = False
 			pcpy.append('accept')

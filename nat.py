@@ -58,6 +58,9 @@ class nat:
 	'''
 	def get_html(self,answer): 
 		s = str(len(self.traffic_list))
+		trafcpy = list(self.traffic_list)
+		pub_ip_addr = copy.copy(self.public_ip_address)
+		start_port = copy.copy(self.starting_port)
 		html = '<b>Private Network:10/24 ' '\tPublic IP Address:'+ self.public_ip_address + \
 		'<br></br>\nNAT port allocated sequentially starting at ' + self.starting_port + '<br></br></b>'
 		#This is where to start doing table stuff
@@ -72,16 +75,34 @@ class nat:
 				if type(cell) is list:
 					for a in cell:
 						html += '<td>%s</td>'%a
-						print a
 				else:
 					html += '<td>%s</td>'%cell
-			html += '<td>Accept: <input type=radio name=button%s value="accept">'%counter	
+			html += '<td>Accept: <input type=radio name=button%s value="acce">'%counter	
 			html += 'Drop: <input type=radio name=button%s value="drop"></td>'%counter
 			html +='</tr>'
 			counter = counter + 1;
 		html += '</table>'
-		html += '</center>'
+		#END OF FIRST TABLE
 
+		html += '<br></br><br></br><table border=1>'
+		html += '<tr><td align=center colspan=10> Connection tracking table </td></tr>'
+		html += '<tr><td align=center colspan=5>Private 5-tuple</td><td align=center colspan=5>Public 5-tuple</td><tr>'
+
+		(T,C) = nat_util.generate_tables(trafcpy, pub_ip_addr, start_port)
+
+		for row in C:
+			html += '<tr>'
+			for cell in row:
+				if type(cell) is list:
+					for item in cell:
+						html += '<td>%s</td>'%item
+				else:
+					html += '<td>%s</td>'%cell
+			html += '</tr>'
+
+
+		html += '</table>'
+		html += '</center>'
 
 		return html
 
