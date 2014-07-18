@@ -101,7 +101,6 @@ class nat:
 						RLI = [Rcount, Lcount, Icount]
 						if RLI == self.conntrack_hotspots[0]:
 							conntrack_nums = 'conntrack_{}_{}_{}'.format(str(Rcount), str(Lcount), str(Icount))
-							print RLI
 							html += '<td><input type="text" value="" style="width:100%" \
 							size="3" name={}></input></td>'.format(conntrack_nums)
 						else:
@@ -160,9 +159,7 @@ class nat:
 		button_count = 0
 		button = 0
 		keys = answer.values()
-		print keys
 		for key in keys:
-			print key
 			if key == None or key == '':
 				return False
 
@@ -172,9 +169,6 @@ class nat:
 		t_count = 0
 		for t in T:
 			key = 'button_%s' %str(t_count)
-			#print key
-			#print answer
-			#print answer.get(key)
 			if T[t_count][2] != answer.get(key):
 				return False 
 			t_count += 1
@@ -188,7 +182,6 @@ class nat:
 			key = 'conntrack_{}_{}_{}'.format(str(a), str(b), str(c))
 			value = C[a][b][c]
 			if value != answer.get(key):
-				print 'enter if loop'
 				return False
 		print answer
 		return True
