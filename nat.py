@@ -136,7 +136,11 @@ class nat:
 		for k in self.traffic_list:
 			temp.append(traffic_button_name(count))
 			count += 1
+<<<<<<< HEAD
 		temp.append(conntrack_textbox_name(self.conntrack_hotspots[0][0], self.conntrack_hotspots[0][1], self.conntrack_hotspots[0][2]))
+=======
+		temp.append('conntrack')
+>>>>>>> 784fb596fabfd660152a5f2b3833c06a7cd983a9
 
 		print temp
 		return temp
@@ -151,7 +155,10 @@ class nat:
 				answer[K] == None
 	'''
 	def check_answer(self,answer):
+<<<<<<< HEAD
 		print 'answer:'
+=======
+>>>>>>> 784fb596fabfd660152a5f2b3833c06a7cd983a9
 		print answer
 		return True
 
