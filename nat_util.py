@@ -83,7 +83,7 @@ preconditions
 	traffic_list is a list of [T,direction] where
 		T is a 5-tuple and direction is 'inbound' or 'outbound'
 '''
-
+#makeC function was added by us
 # input private list, output public/private list
 def makeC(traffic_line, public_addr, nat_port):
 	trafcpy = list(traffic_line)
@@ -91,8 +91,6 @@ def makeC(traffic_line, public_addr, nat_port):
 	Clist[1][1] = public_addr
 	Clist[1][2] = str(nat_port)
 	return Clist
-
-
 
 def generate_tables(traffic_list, public_address, nat_port):
 	T = []
@@ -140,8 +138,8 @@ def generate_tables(traffic_list, public_address, nat_port):
 				if not inFlag:
 					pcpy.append('drop')
 					T.append(pcpy) 
-		print "T: "
-		print T
-		print "C: "
-		print C
+		#print "T: "
+		#print T
+		#print "C: "
+		#print C
 	return (T, C)

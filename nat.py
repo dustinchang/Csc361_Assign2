@@ -58,9 +58,6 @@ class nat:
 	'''
 	def get_html(self,answer): 
 		s = str(len(self.traffic_list))
-		trafcpy = list(self.traffic_list)
-		pub_ip_addr = copy.copy(self.public_ip_address)
-		start_port = copy.copy(self.starting_port)
 		html = '<b>Private Network:10/24 ' '\tPublic IP Address:'+ self.public_ip_address + \
 		'<br></br>\nNAT port allocated sequentially starting at ' + self.starting_port + '<br></br></b>'
 		#This is where to start doing table stuff
@@ -77,32 +74,62 @@ class nat:
 						html += '<td>%s</td>'%a
 				else:
 					html += '<td>%s</td>'%cell
-			html += '<td>Accept: <input type=radio name=button%s value="acce">'%counter	
+			html += '<td>Accept: <input type=radio name=button%s value="accept">'%counter	
 			html += 'Drop: <input type=radio name=button%s value="drop"></td>'%counter
 			html +='</tr>'
 			counter = counter + 1;
 		html += '</table>'
 		#END OF FIRST TABLE
 
+		Rcount = 0
+		Lcount = 0
+		Icount = 0
 		html += '<br></br><br></br><table border=1>'
 		html += '<tr><td align=center colspan=10> Connection tracking table </td></tr>'
 		html += '<tr><td align=center colspan=5>Private 5-tuple</td><td align=center colspan=5>Public 5-tuple</td><tr>'
 
-		(T,C) = nat_util.generate_tables(trafcpy, pub_ip_addr, start_port)
+		(T,C) = nat_util.generate_tables(self.traffic_list, self.public_ip_address, self.starting_port)
 
+		#ty = type(self.conntrack_hotspots)
+		#print ty
+		#print self.conntrack_hotspots
+		#print '1'
+		#print type(self.conntrack_hotspots[0][0])
+		#print self.conntrack_hotspots[0]
+		#print '2'
+		#print '3'
 		for row in C:
+			Lcount = 0
+			Icount = 0
 			html += '<tr>'
 			for cell in row:
+				Icount = 0
 				if type(cell) is list:
 					for item in cell:
-						html += '<td>%s</td>'%item
+						#print 'in for'
+						RLI = [Rcount, Lcount, Icount]
+						print RLI
+						print self.conntrack_hotspots[0]
+						if RLI == self.conntrack_hotspots[0]:
+							print 'If statement'
+							html += '<td><input type="text" style="width:100%" size="3" name="conntrack"></input></td>'
+							#html += '<td>%s</td>'%item
+							print 'after'
+						else:
+							html += '<td>%s</td>'%item
+						Icount += 1
 				else:
 					html += '<td>%s</td>'%cell
+				Lcount += 1
 			html += '</tr>'
+			Rcount += 1
 
 
 		html += '</table>'
 		html += '</center>'
+
+		#html += html_util.get_table_nat([self.traffic_hotspots,], )
+		#print self.conntrack_hotspots
 
 		return html
 
