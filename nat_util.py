@@ -109,10 +109,8 @@ def generate_tables(traffic_list, public_address, nat_port):
 			else:				
 				for k in C:
 					if pcpy[0] == k[0]:
-						print 'EQUAL'
 						outFlag = True
 				if not outFlag:
-					print 'NOT EQUAL'
 					C.append(makeC(pcpy[0], public_address, nat_port))
 					nat_port = int(nat_port)
 					nat_port = nat_port + 1
@@ -138,8 +136,4 @@ def generate_tables(traffic_list, public_address, nat_port):
 				if not inFlag:
 					pcpy.append('drop')
 					T.append(pcpy) 
-		#print "T: "
-		#print T
-		#print "C: "
-		#print C
 	return (T, C)

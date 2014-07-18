@@ -65,7 +65,7 @@ class nat:
 		html += '<table border=1>'
 		html += '<tr><td align=center colspan=7> Traffic Table </td></tr>'
 		html += '<tr><td align=center colspan=5> 5-tuple </td><td align=center>Direction</td><td align=center>Action</td></tr>'
-		counter = 1;
+		counter = 0;
 		for row in self.traffic_list:
 			html += '<tr>'
 			for cell in row:
@@ -74,8 +74,8 @@ class nat:
 						html += '<td>%s</td>'%a
 				else:
 					html += '<td>%s</td>'%cell
-			html += '<td>Accept: <input type=radio name=button%s value="accept">'%counter	
-			html += 'Drop: <input type=radio name=button%s value="drop"></td>'%counter
+			html += '<td>Accept: <input type=radio name=button_%s value="accept">'%counter	
+			html += 'Drop: <input type=radio name=button_%s value="drop"></td>'%counter
 			html +='</tr>'
 			counter = counter + 1;
 		html += '</table>'
@@ -90,14 +90,6 @@ class nat:
 
 		(T,C) = nat_util.generate_tables(self.traffic_list, self.public_ip_address, self.starting_port)
 
-		#ty = type(self.conntrack_hotspots)
-		#print ty
-		#print self.conntrack_hotspots
-		#print '1'
-		#print type(self.conntrack_hotspots[0][0])
-		#print self.conntrack_hotspots[0]
-		#print '2'
-		#print '3'
 		for row in C:
 			Lcount = 0
 			Icount = 0
@@ -106,15 +98,11 @@ class nat:
 				Icount = 0
 				if type(cell) is list:
 					for item in cell:
-						#print 'in for'
 						RLI = [Rcount, Lcount, Icount]
-						print RLI
-						print self.conntrack_hotspots[0]
 						if RLI == self.conntrack_hotspots[0]:
-							print 'If statement'
-							html += '<td><input type="text" style="width:100%" size="3" name="conntrack"></input></td>'
-							#html += '<td>%s</td>'%item
-							print 'after'
+							conntrack_nums = 'conntrack_{}_{}_{}'.format(str(Rcount), str(Lcount), str(Icount))
+							html += '<td><input type="text" value="" style="width:100%" \
+							size="3" name={}></input></td>'.format(conntrack_nums)
 						else:
 							html += '<td>%s</td>'%item
 						Icount += 1
@@ -124,12 +112,8 @@ class nat:
 			html += '</tr>'
 			Rcount += 1
 
-
 		html += '</table>'
 		html += '</center>'
-
-		#html += html_util.get_table_nat([self.traffic_hotspots,], )
-		#print self.conntrack_hotspots
 
 		return html
 
@@ -147,7 +131,15 @@ class nat:
 		None
 	'''
 	def get_input_element_ids(self):
-		return [ ]
+		temp = []
+		count = 0
+		for k in self.traffic_list:
+			temp.append(traffic_button_name(count))
+			count += 1
+		temp.append(conntrack_textbox_name(self.conntrack_hotspots[0][0], self.conntrack_hotspots[0][1], self.conntrack_hotspots[0][2]))
+
+		print temp
+		return temp
 
 	'''
 	purpose
@@ -159,6 +151,8 @@ class nat:
 				answer[K] == None
 	'''
 	def check_answer(self,answer):
+		print 'answer:'
+		print answer
 		return True
 
 # return name of text box in traffic table at row/col
