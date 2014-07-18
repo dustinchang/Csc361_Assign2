@@ -129,7 +129,22 @@ def generate_tables(traffic_list, public_address, nat_port):
 					inDestPort = pcpy[0][4]
 					outPubSrcAddr = k[1][1]
 					outPubSrcPort = k[1][2]
-					if((inDestAddr==outPubSrcAddr) and (inDestPort==outPubSrcPort)):
+
+					inSrcAddr = pcpy[0][1]
+					inSrcPort = pcpy[0][2]
+					outPubDestAddr = k[1][3]
+					outPubDestPort = k[1][4]
+
+					inTcpUdp = pcpy[0][0]	
+					outTcpUdp = k[1][0]
+
+					A = (inTcpUdp ==  outTcpUdp)
+					B = (inSrcAddr == outPubDestAddr)
+					D = (inSrcPort == outPubDestPort)
+					E = (inDestAddr == outPubSrcAddr)
+					F = (inDestPort == outPubSrcPort)
+
+					if(A and B and D and E and F):
 						pcpy.append('accept')
 						T.append(pcpy)	
 						inFlag = True

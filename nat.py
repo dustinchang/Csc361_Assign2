@@ -126,6 +126,7 @@ class nat:
 		None
 	'''
 	def get_input_element_ids(self):
+		
 		temp = []
 		count = 0
 		for k in self.traffic_list:
@@ -146,6 +147,8 @@ class nat:
 				answer[K] == None
 	'''
 	def check_answer(self,answer):
+		
+		#sanity check to see if radio buttons or textbox unchecked/null
 		button_count = 0
 		button = 0
 		keys = answer.values()
@@ -155,7 +158,22 @@ class nat:
 			if key == None or key == '':
 				return False
 
-
+		#check to see if radio button correct
+		(T,C) = nat_util.generate_tables(self.traffic_list, self.public_ip_address, self.starting_port)
+		print T
+		print C
+		#iterate through radio buttons
+		t_count = 0
+		for t in T:
+			key = 'button_%s' %str(t_count)
+			print key
+			print answer
+			print answer.get(key)
+			print 'after getKey'
+			if T[t_count][2] != answer.get(key):
+				print 'enter if loop'
+				return False 
+			t_count += 1
 		print answer
 		return True
 
