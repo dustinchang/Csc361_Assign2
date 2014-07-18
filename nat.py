@@ -133,9 +133,15 @@ class nat:
 		for k in self.traffic_list:
 			temp.append(traffic_button_name(count))
 			count += 1
-		#may need to add traffic_textbox hotspots	
-		#may need to generalize this - for l in self.conntrack_hotspots
-		temp.append(conntrack_textbox_name(self.conntrack_hotspots[0][0], self.conntrack_hotspots[0][1], self.conntrack_hotspots[0][2]))
+		#may need to add traffic_textbox hotspots	 
+
+		count = 0
+		for h in self.conntrack_hotspots:
+			a = self.conntrack_hotspots[count][0]
+			b = self.conntrack_hotspots[count][1]
+			c = self.conntrack_hotspots[count][2]
+			temp.append(conntrack_textbox_name(a, b, c))
+			count += 1
 
 		return temp
 
@@ -174,18 +180,16 @@ class nat:
 			t_count += 1
 
 		#check to see if textbox correct
-		#may need to generalize this
-		#for h in self.conntrack_hotspots:
-		print 'before conntrack'
-		print self.conntrack_hotspots[0][0]
-		key = 'conntrack_{}_{}_{}'.format(str(self.conntrack_hotspots[0][0]), str(self.conntrack_hotspots[0][1]), str(self.conntrack_hotspots[0][2]))
-		print 'key: ' + key
-		print answer.get(key)
-		print type(answer.get(key))
-		value = C[self.conntrack_hotspots[0][0]][self.conntrack_hotspots[0][1]][self.conntrack_hotspots[0][2]]
-		if value != answer.get(key):
-			print 'enter if loop'
-			return False
+		count = 0
+		for h in self.conntrack_hotspots:
+			a = self.conntrack_hotspots[count][0]
+			b = self.conntrack_hotspots[count][1]
+			c = self.conntrack_hotspots[count][2]
+			key = 'conntrack_{}_{}_{}'.format(str(a), str(b), str(c))
+			value = C[a][b][c]
+			if value != answer.get(key):
+				print 'enter if loop'
+				return False
 		print answer
 		return True
 
