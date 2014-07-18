@@ -60,7 +60,7 @@ class nat:
 		s = str(len(self.traffic_list))
 		html = '<b>Private Network:10/24 ' '\tPublic IP Address:'+ self.public_ip_address + \
 		'<br></br>\nNAT port allocated sequentially starting at ' + self.starting_port + '<br></br></b>'
-		#This is where to start doing table stuff
+		#This is where to start dolocalhost:7777/cqg/quiz?spec=361/nat_practiceing table stuff
 		html += '<center>'
 		html += '<table border=1>'
 		html += '<tr><td align=center colspan=7> Traffic Table </td></tr>'
@@ -101,6 +101,7 @@ class nat:
 						RLI = [Rcount, Lcount, Icount]
 						if RLI == self.conntrack_hotspots[0]:
 							conntrack_nums = 'conntrack_{}_{}_{}'.format(str(Rcount), str(Lcount), str(Icount))
+							print RLI
 							html += '<td><input type="text" value="" style="width:100%" \
 							size="3" name={}></input></td>'.format(conntrack_nums)
 						else:
@@ -132,9 +133,10 @@ class nat:
 		for k in self.traffic_list:
 			temp.append(traffic_button_name(count))
 			count += 1
+		#may need to add traffic_textbox hotspots	
+		#may need to generalize this - for l in self.conntrack_hotspots
 		temp.append(conntrack_textbox_name(self.conntrack_hotspots[0][0], self.conntrack_hotspots[0][1], self.conntrack_hotspots[0][2]))
 
-		print temp
 		return temp
 
 	'''
@@ -160,20 +162,30 @@ class nat:
 
 		#check to see if radio button correct
 		(T,C) = nat_util.generate_tables(self.traffic_list, self.public_ip_address, self.starting_port)
-		print T
-		print C
 		#iterate through radio buttons
 		t_count = 0
 		for t in T:
 			key = 'button_%s' %str(t_count)
-			print key
-			print answer
-			print answer.get(key)
-			print 'after getKey'
+			#print key
+			#print answer
+			#print answer.get(key)
 			if T[t_count][2] != answer.get(key):
-				print 'enter if loop'
 				return False 
 			t_count += 1
+
+		#check to see if textbox correct
+		#may need to generalize this
+		#for h in self.conntrack_hotspots:
+		print 'before conntrack'
+		print self.conntrack_hotspots[0][0]
+		key = 'conntrack_{}_{}_{}'.format(str(self.conntrack_hotspots[0][0]), str(self.conntrack_hotspots[0][1]), str(self.conntrack_hotspots[0][2]))
+		print 'key: ' + key
+		print answer.get(key)
+		print type(answer.get(key))
+		value = C[self.conntrack_hotspots[0][0]][self.conntrack_hotspots[0][1]][self.conntrack_hotspots[0][2]]
+		if value != answer.get(key):
+			print 'enter if loop'
+			return False
 		print answer
 		return True
 

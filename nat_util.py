@@ -125,19 +125,21 @@ def generate_tables(traffic_list, public_address, nat_port):
 				for k in C:
 					#check if packet in list - P.destAddr == C.public.sourceAddr and 
 					#p.destPort = C.public.sourcePort
-					inDestAddr = pcpy[0][3]
-					inDestPort = pcpy[0][4]
-					outPubSrcAddr = k[1][1]
-					outPubSrcPort = k[1][2]
-
+					
+					#in 5-tuple
+					inTcpUdp = pcpy[0][0]		
 					inSrcAddr = pcpy[0][1]
 					inSrcPort = pcpy[0][2]
+					inDestAddr = pcpy[0][3]
+					inDestPort = pcpy[0][4]
+					
+					#table 5-tuple
+					outTcpUdp = k[1][0]
+					outPubSrcAddr = k[1][1]
+					outPubSrcPort = k[1][2]					
 					outPubDestAddr = k[1][3]
 					outPubDestPort = k[1][4]
-
-					inTcpUdp = pcpy[0][0]	
-					outTcpUdp = k[1][0]
-
+		
 					A = (inTcpUdp ==  outTcpUdp)
 					B = (inSrcAddr == outPubDestAddr)
 					D = (inSrcPort == outPubDestPort)
