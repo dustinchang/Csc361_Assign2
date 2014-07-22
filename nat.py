@@ -112,7 +112,7 @@ class nat:
 						RLI = [Rcount, Lcount, Icount]
 						if RLI == self.conntrack_hotspots[0]:
 							conntrack_nums = 'conntrack_{}_{}_{}'.format(str(Rcount), str(Lcount), str(Icount))
-							if answer.get(conntrack_nums) == None:
+							if answer.get(conntrack_nums) == None or len(answer.get(conntrack_nums)) == 0:
 								html += '<td><input type="text" value="" style="width:100%" \
 								size="3" name={}></input></td>'.format(conntrack_nums)
 							else:
