@@ -1,3 +1,7 @@
+#Csc361 Group Project - NAT QUIZ
+#Group Members: Dustin Chang, Stephen Chapman, Kevin Gill
+
+
 import os
 import copy
 
@@ -136,13 +140,13 @@ class nat:
 		None
 	'''
 	def get_input_element_ids(self):
-		
+
 		temp = []
 		count = 0
 		for k in self.traffic_list:
 			temp.append(traffic_button_name(count))
 			count += 1
-		#may need to add traffic_textbox hotspots	 
+		#may need to add traffic_textbox hotspots
 
 		count = 0
 		for h in self.conntrack_hotspots:
@@ -164,7 +168,7 @@ class nat:
 				answer[K] == None
 	'''
 	def check_answer(self,answer):
-		
+
 		#sanity check to see if radio buttons or textbox unchecked/null
 		button_count = 0
 		button = 0
@@ -180,7 +184,7 @@ class nat:
 		for t in T:
 			key = 'button_%s' %str(t_count)
 			if T[t_count][2] != answer.get(key):
-				return False 
+				return False
 			t_count += 1
 
 		#check to see if textbox correct
