@@ -1,3 +1,7 @@
+#Csc361 Group Project - NAT QUIZ
+#Group Members: Dustin Chang, Stephen Chapman, Kevin Gill
+
+
 import os
 import copy
 
@@ -56,7 +60,7 @@ class nat:
 			if K was not in submitted answer
 				answer[K] == None
 	'''
-	def get_html(self,answer): 
+	def get_html(self,answer):
 		s = str(len(self.traffic_list))
 		html = '<b>Private Network:10/24 ' '\tPublic IP Address:'+ self.public_ip_address + \
 		'<br></br>\nNAT port allocated sequentially starting at ' + self.starting_port + '<br></br></b>'
@@ -74,7 +78,7 @@ class nat:
 						html += '<td>%s</td>'%a
 				else:
 					html += '<td>%s</td>'%cell
-			html += '<td>Accept: <input type=radio name=button_%s value="accept">'%counter	
+			html += '<td>Accept: <input type=radio name=button_%s value="accept">'%counter
 			html += 'Drop: <input type=radio name=button_%s value="drop"></td>'%counter
 			html +='</tr>'
 			counter = counter + 1;
@@ -126,13 +130,13 @@ class nat:
 		None
 	'''
 	def get_input_element_ids(self):
-		
+
 		temp = []
 		count = 0
 		for k in self.traffic_list:
 			temp.append(traffic_button_name(count))
 			count += 1
-		#may need to add traffic_textbox hotspots	 
+		#may need to add traffic_textbox hotspots
 
 		count = 0
 		for h in self.conntrack_hotspots:
@@ -154,7 +158,7 @@ class nat:
 				answer[K] == None
 	'''
 	def check_answer(self,answer):
-		
+
 		#sanity check to see if radio buttons or textbox unchecked/null
 		button_count = 0
 		button = 0
@@ -170,7 +174,7 @@ class nat:
 		for t in T:
 			key = 'button_%s' %str(t_count)
 			if T[t_count][2] != answer.get(key):
-				return False 
+				return False
 			t_count += 1
 
 		#check to see if textbox correct
