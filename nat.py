@@ -56,11 +56,11 @@ class nat:
 			if K was not in submitted answer
 				answer[K] == None
 	'''
-	def get_html(self,answer): 
+	def get_html(self,answer):
 		s = str(len(self.traffic_list))
 		html = '<b>Private Network:10/24 ' '\tPublic IP Address:'+ self.public_ip_address + \
 		'<br></br>\nNAT port allocated sequentially starting at ' + self.starting_port + '<br></br></b>'
-		#This is where to start dolocalhost:7777/cqg/quiz?spec=361/nat_practiceing table stuff
+		#This is where to start do      localhost:7777/cqg/quiz?spec=361/nat_practice
 		html += '<center>'
 		html += '<table border=1>'
 		html += '<tr><td align=center colspan=7> Traffic Table </td></tr>'
@@ -74,8 +74,15 @@ class nat:
 						html += '<td>%s</td>'%a
 				else:
 					html += '<td>%s</td>'%cell
-			html += '<td>Accept: <input type=radio name=button_%s value="accept">'%counter	
-			html += 'Drop: <input type=radio name=button_%s value="drop"></td>'%counter
+			if answer.get("button_%s" %counter) == 'accept':
+				html += '<td>Accept: <input type=radio name=button_%s value="accept" checked>'%counter	
+				html += 'Drop: <input type=radio name=button_%s value="drop"></td>'%counter
+			elif answer.get("button_%s" %counter) == 'drop':
+				html += '<td>Accept: <input type=radio name=button_%s value="accept">'%counter	
+				html += 'Drop: <input type=radio name=button_%s value="drop" checked></td>'%counter			
+			else:
+				html += '<td>Accept: <input type=radio name=button_%s value="accept">'%counter	
+				html += 'Drop: <input type=radio name=button_%s value="drop"></td>'%counter
 			html +='</tr>'
 			counter = counter + 1;
 		html += '</table>'
@@ -101,8 +108,12 @@ class nat:
 						RLI = [Rcount, Lcount, Icount]
 						if RLI == self.conntrack_hotspots[0]:
 							conntrack_nums = 'conntrack_{}_{}_{}'.format(str(Rcount), str(Lcount), str(Icount))
-							html += '<td><input type="text" value="" style="width:100%" \
-							size="3" name={}></input></td>'.format(conntrack_nums)
+							if answer.get(conntrack_nums) == None:
+								html += '<td><input type="text" value="" style="width:100%" \
+								size="3" name={}></input></td>'.format(conntrack_nums)
+							else:
+								html += '<td><input type="text" value={} style="width:100%" \
+								size="3" name={}></input></td>'.format(answer.get(conntrack_nums), conntrack_nums)
 						else:
 							html += '<td>%s</td>'%item
 						Icount += 1
@@ -116,7 +127,6 @@ class nat:
 		html += '</center>'
 
 		return html
-
 
 	'''
 	purpose
@@ -183,7 +193,6 @@ class nat:
 			value = C[a][b][c]
 			if value != answer.get(key):
 				return False
-		print answer
 		return True
 
 # return name of text box in traffic table at row/col
