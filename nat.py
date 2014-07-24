@@ -61,11 +61,11 @@ class nat:
 				answer[K] == None
 	'''
 	def get_html(self,answer):
-		s = str(len(self.traffic_list))
+		#html header
 		html = '<b>Private Network:10/24 ' '\tPublic IP Address:'+ self.public_ip_address + \
 		'<br></br>\nNAT port allocated sequentially starting at ' + self.starting_port + '<br></br></b>'
-		#This is where to start do      localhost:7777/cqg/quiz?spec=361/nat_practice
 		html += '<center>'
+		#START OF TRAFFIC TABLE
 		html += '<table border=1>'
 		html += '<tr><td align=center colspan=7> Traffic Table </td></tr>'
 		html += '<tr><td align=center colspan=5> 5-tuple </td><td align=center>Direction</td><td align=center>Action</td></tr>'
@@ -90,8 +90,9 @@ class nat:
 			html +='</tr>'
 			counter = counter + 1;
 		html += '</table>'
-		#END OF FIRST TABLE
+		#END OF TRAFFIC TABLE
 
+		#START OF CONNECTION TRACKING TABLE
 		Rcount = 0
 		Lcount = 0
 		Icount = 0
@@ -128,6 +129,7 @@ class nat:
 			Rcount += 1
 
 		html += '</table>'
+		#END OF CONNECTION TRACKING TABLE
 		html += '</center>'
 
 		return html
@@ -172,12 +174,13 @@ class nat:
 		#sanity check to see if radio buttons or textbox unchecked/null
 		button_count = 0
 		button = 0
-		keys = answer.values()
+		keys = copy.deepcopy(answer.values())
 		for key in keys:
 			if key == None or key == '':
+				print answer
 				return False
 
-		#check to see if radio button correct
+		#check to see if radio buttons correct
 		(T,C) = nat_util.generate_tables(self.traffic_list, self.public_ip_address, self.starting_port)
 		#iterate through radio buttons
 		t_count = 0

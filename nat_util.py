@@ -1,7 +1,3 @@
-#Csc361 Group Project - NAT QUIZ
-#Group Members: Dustin Chang, Stephen Chapman, Kevin Gill
-
-
 import copy
 
 '''
@@ -88,7 +84,7 @@ preconditions
 		T is a 5-tuple and direction is 'inbound' or 'outbound'
 '''
 #makeC function was added by us
-# input private list, output public/private list
+#input private list, output public/private list
 def makeC(traffic_line, public_addr, nat_port):
 	trafcpy = list(traffic_line)
 	Clist = [traffic_line, trafcpy]
@@ -100,7 +96,7 @@ def generate_tables(traffic_list, public_address, nat_port):
 	T = []
 	C = []
 	for p in traffic_list:
-		pcpy = copy.copy(p)
+		pcpy = copy.deepcopy(p)
 		if pcpy[1] == 'outbound':
 			outFlag = False
 			pcpy.append('accept')
@@ -110,7 +106,7 @@ def generate_tables(traffic_list, public_address, nat_port):
 				C.append(makeC(pcpy[0], public_address, nat_port))
 				nat_port = int(nat_port)
 				nat_port = nat_port + 1
-			else:
+			else:				
 				for k in C:
 					if pcpy[0] == k[0]:
 						outFlag = True
@@ -118,8 +114,7 @@ def generate_tables(traffic_list, public_address, nat_port):
 					C.append(makeC(pcpy[0], public_address, nat_port))
 					nat_port = int(nat_port)
 					nat_port = nat_port + 1
-		#pcpy[1] == 'inbound'
-		else:
+		else: 
 			#C empty - drop by default
 			inFlag = False
 			if not C:
@@ -127,23 +122,21 @@ def generate_tables(traffic_list, public_address, nat_port):
 				T.append(pcpy)
 			else:
 				for k in C:
-					#check if packet in list - P.destAddr == C.public.sourceAddr and
-					#p.destPort = C.public.sourcePort
-
-					#in 5-tuple
-					inTcpUdp = pcpy[0][0]
+					#check if packet in list
+					#inbound 5-tuple
+					inTcpUdp = pcpy[0][0]		
 					inSrcAddr = pcpy[0][1]
 					inSrcPort = pcpy[0][2]
 					inDestAddr = pcpy[0][3]
 					inDestPort = pcpy[0][4]
-
-					#table 5-tuple
+					
+					#output table 5-tuple
 					outTcpUdp = k[1][0]
 					outPubSrcAddr = k[1][1]
-					outPubSrcPort = k[1][2]
+					outPubSrcPort = k[1][2]					
 					outPubDestAddr = k[1][3]
 					outPubDestPort = k[1][4]
-
+		
 					A = (inTcpUdp ==  outTcpUdp)
 					B = (inSrcAddr == outPubDestAddr)
 					D = (inSrcPort == outPubDestPort)
@@ -152,9 +145,9 @@ def generate_tables(traffic_list, public_address, nat_port):
 
 					if(A and B and D and E and F):
 						pcpy.append('accept')
-						T.append(pcpy)
+						T.append(pcpy)	
 						inFlag = True
 				if not inFlag:
 					pcpy.append('drop')
-					T.append(pcpy)
+					T.append(pcpy) 
 	return (T, C)
